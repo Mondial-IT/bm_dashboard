@@ -1,0 +1,7 @@
+name: Dashboard Module
+type: module
+description: Provides dashboard functionalities
+package: Blue Marloc
+core_version_requirement: ^11
+dependencies:
+  - bm_main:bm_main

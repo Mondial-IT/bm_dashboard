@@ -1,0 +1,26 @@
+{
+    "name": "mondial-it/bm_dashboard",
+    "description": "Blue Marloc SAAS Dashboard module.",
+    "type": "drupal-custom-module",
+    "version": "1.0.0",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Blue Marloc",
+            "email": "info@bluemarloc.com"
+        }
+    ],
+    "require": {
+        "drupal/core": "^10.2 || ^11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Drupal\\bm_cache\\": "src/"
+        }
+    },
+    "extra": {
+        "drupal": {
+            "package": "Blue Marloc"
+        }
+    }
+}

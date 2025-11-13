@@ -1,0 +1,81 @@
+<?php
+/*
+ Copyright (c) Mondial-IT BV - Blue Marloc 2024
+   Created on 2024-11-21 at 11:32:17
+ */ /** @noinspection PhpUnused */
+
+
+use Drupal\bm_dashboard\BMDashboardPagebuilder\BMDashboardPagebuilder;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ *
+ * @noinspection PhpUnused*/
+function bm_dashboard_help($route_name, RouteMatchInterface $route_match): string {
+  if ($route_name == 'help.page.bm_dashboard') {
+    $output = '<p>' . t('This module provides Blue Marloc dashboard.') . '</p>';
+    $output .= '<h3>' . t('Available dashboards') . '</h3>';
+    $output .= '<ul>';
+    $output .= '<li>' . t('[bm:title]') . ': ' . t('The title of the current node.') . '</li>';
+    $output .= '</ul>';
+    return $output;
+  }
+  return '';
+}
+
+/*
+ * hook_entity_update. see MP-A-199 Templates extension
+ *
+ * On a dashboard there are gavias page builder components.
+ * When the dashboard is of type 'template' then these components
+ * are made available to gva_meta_component. These components can be
+ * more complex than regular components. On save of the dashboard
+ * the component template_id's are extracted and the json content.
+ * These are then cached, for when a dashboard is being displayed
+ * and the json is requested using the template id.
+ *
+ * Cache the dashboard templates which are used on user dashboards on update.
+ */
+function bm_dashboard_entity_update(Drupal\Core\Entity\EntityInterface $entity): void {
+  if ($entity->bundle() === 'dashboard') {
+    /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+    $type= $entity->get('field_dashboard_type')->getValue();
+    if($type[0]['value'] == 'template') {
+      BMDashboardPagebuilder::rebuild_pagebuilder_templates_cache();
+    }
+  }
+}
+/**
+ * hook_gva_meta_component_info see MP-A-199 Templates extension
+ * Request a list of names of the components which can be used
+ * in the gva_meta_component of a users dashboard, based on a
+ * defined component in the template dashboards.
+ *
+ * @param $templates [key1=>['label'=>'label voor select in de form','gva_pagebuilder_content'=>json pagebuilder code],key2=>..
+ * @return void
+ */
+function bm_dashboard_gva_meta_component_info(&$templates): void {
+  BMDashboardPagebuilder::gva_meta_component_info($templates);
+}
+
+/**
+ * hook_gva_pagebuilder_content_alter see MP-A-199 Templates extension
+ * see gavias_pagebuilder.module
+ *
+ * Invoked just before gavias builds the page from the $content variable
+ * Processes the 'content' array. Looks for meta_components
+ * and inserts, removes, alters the components as required.
+ *
+ * @param $variables
+ *
+ * @return void
+ */
+function bm_dashboard_gva_pagebuilder_content_alter(&$variables): void {
+  BMDashboardPagebuilder::gva_pagebuilder_content_alter($variables);
+}
+
+function bm_dashboard_preprocess_node__dashboard(&$variables): void {
+  $variables['#attached']['library'][] = 'ziston/tippyjs';
+  $variables['#attached']['library'][] = 'ziston/bm_tippyjs';
+}

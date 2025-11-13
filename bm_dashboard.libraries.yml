@@ -1,0 +1,9 @@
+bm_dashboard:
+  js:
+    js/bm_dashboard.js: {}
+  css:
+    component:
+      css/bm_dashboard.css: {}
+  dependencies:
+    - core/drupalSettings
+    - bm_main/bm_main
