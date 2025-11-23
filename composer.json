@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Drupal\\bm_cache\\": "src/"
+            "Drupal\\bm_dashboard\\": "src/"
         }
     },
     "extra": {
