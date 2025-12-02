@@ -14,10 +14,14 @@ use Drupal\Core\Routing\RouteMatchInterface;
  * @noinspection PhpUnused*/
 function bm_dashboard_help($route_name, RouteMatchInterface $route_match): string {
   if ($route_name == 'help.page.bm_dashboard') {
-    $output = '<p>' . t('This module provides Blue Marloc dashboard.') . '</p>';
-    $output .= '<h3>' . t('Available dashboards') . '</h3>';
-    $output .= '<ul>';
-    $output .= '<li>' . t('[bm:title]') . ': ' . t('The title of the current node.') . '</li>';
+    $output = '<h2>' . t('Blue Marloc Dashboard Module') . '</h2>';
+    $output .= '<p>' . t('Provides shared dashboard builder helpers (template caching, Gavias meta components, hook integrations) that power the Blue Marloc dashboards.') . '</p>';
+
+    $output .= '<h3>' . t('Menus') . '</h3><ul><li>' . t('None. The module augments existing Gavias/Gaviastheme dashboards without adding navigation entries.') . '</li></ul>';
+    $output .= '<h3>' . t('URIs') . '</h3><ul><li>' . t('None. It hooks into dashboard entities and Gavias builder callbacks.') . '</li></ul>';
+
+    $output .= '<h3>' . t('Dashboard tokens') . '</h3><ul>';
+    $output .= '<li>' . t('<code>[bm:title]</code> — Outputs the current dashboard node title.') . '</li>';
     $output .= '</ul>';
     return $output;
   }
